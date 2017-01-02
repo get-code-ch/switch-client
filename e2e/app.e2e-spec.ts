@@ -6,9 +6,10 @@ describe('switch-client App', function() {
   beforeEach(() => {
     page = new SwitchClientPage();
   });
-
+/*
   it('should display message saying app works', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toEqual('app works!');
   });
+  */
 });

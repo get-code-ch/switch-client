@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'swc-app-root',
   templateUrl: './app.component.html',
   styleUrls: ['../assets/styles/app.component.scss']
 })
+
 export class AppComponent {
-  servername = 'N/A';
+
 }

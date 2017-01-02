@@ -1,20 +1,23 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
+import {GpioStateComponent} from './gpio-state/gpio-state.component';
 import {AppComponent} from './app.component';
-import {GpioStateComponent} from './gpio-state.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    GpioStateComponent
+    GpioStateComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [],
   bootstrap: [AppComponent]
