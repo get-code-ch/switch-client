@@ -1,4 +1,4 @@
-$font-stack:    Helvetica, sans-serif;
+$font-stack:  "DejaVu Sans" , Helvetica, sans-serif;
 $primary-color: 	#428bca;
 
 .gpio-state {
@@ -7,5 +7,9 @@ $primary-color: 	#428bca;
 }
 
 h1 {
-  color: darkgreen;
+  color: $primary-color;
+}
+
+.svg {
+  fill: darkgreen;
 }

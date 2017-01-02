@@ -1,2 +1,14 @@
-  <p>GPIO: {{gpio}}</p>
-  <p>State: {{state}}</p>
+  <img src="../../assets/images/button-green.svg" (click)="changeState(16,true)">
+  <img src="../../assets/images/button-red.svg"  (click)="changeState(16,false)">
+  <table border="0px">
+    <tr>
+      <td>
+        <span *ngIf="state === 0"><img src="../../assets/images/button-red.svg"></span>
+        <span *ngIf="state === 1"><img src="../../assets/images/button-green.svg"></span>
+      </td>
+      <td>
+        GPIO: {{gpio}}
+      </td>
+    </tr>
+  </table>
+

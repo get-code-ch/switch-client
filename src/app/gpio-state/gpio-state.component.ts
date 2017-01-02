@@ -12,7 +12,7 @@ export class GpioStateComponent {
   // socket = io.connect('http://' + window.location.hostname + ':8080');
   socket: any;
 
-  gpioIn = 12;
+  gpioIn = 16;
   servername: string = 'N/A';
   state: number;
   gpio: number;
@@ -31,5 +31,11 @@ export class GpioStateComponent {
 
     this.socket.emit('get', {'gpio': this.gpioIn, 'cmd': 'state'});
   }
-
+  changeState(gpioIn, state: boolean) {
+    if (state) {
+      this.socket.emit('send', {gpio: gpioIn, 'cmd': 'state', value: 'ON'});
+    } else {
+      this.socket.emit('send', {gpio: gpioIn, 'cmd': 'state', value: 'OFF'});
+    }
+  }
 }
