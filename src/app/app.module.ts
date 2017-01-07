@@ -6,6 +6,8 @@ import {HttpModule} from '@angular/http';
 import {GpioStateComponent} from './gpio-state/gpio-state.component';
 import {AppComponent} from './app.component';
 
+import {SwitchConfigService} from './config/switch-config.service';
+
 @NgModule({
   declarations: [
     GpioStateComponent,
@@ -14,12 +16,12 @@ import {AppComponent} from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [],
+  providers: [SwitchConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

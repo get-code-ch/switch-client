@@ -1,15 +1,16 @@
-import {Component} from '@angular/core';
-
+import {Component, OnInit} from '@angular/core';
 import * as io from 'socket.io-client';
+
+import {SwitchConfigService} from '../config/switch-config.service';
+import {SwitchConfig} from '../config/switch-config';
 
 @Component({
   selector: 'swc-gpio-state',
   templateUrl: './gpio-state.component.html',
-  styleUrls: [ '../../assets/styles/app.component.scss']
+  styleUrls: ['../../assets/styles/app.component.scss']
 })
 
-export class GpioStateComponent {
-  // socket = io.connect('http://' + window.location.hostname + ':8080');
+export class GpioStateComponent implements OnInit {
   socket: any;
 
   gpioIn = 16;
@@ -17,10 +18,15 @@ export class GpioStateComponent {
   state: number;
   gpio: number;
 
-  constructor() {
-    // this.servername = 'N/A';
-    // console.log(this.servername);
-    this.socket = io('http://pommepi3.pommepn:8080');
+  constructor(private configService: SwitchConfigService) {
+  }
+
+  ngOnInit() {
+    this.configService.getConfig().subscribe(switchConfig => this.connect(switchConfig));
+  }
+
+  connect(switchConfig: SwitchConfig) {
+    this.socket = io(switchConfig.service + '://' + switchConfig.server + ':' + switchConfig.port);
 
     this.socket.on('gpiostatus', function (data: any) {
       console.log('gpiostatus : ' + JSON.stringify(data));
@@ -31,6 +37,7 @@ export class GpioStateComponent {
 
     this.socket.emit('get', {'gpio': this.gpioIn, 'cmd': 'state'});
   }
+
   changeState(gpioIn, state: boolean) {
     if (state) {
       this.socket.emit('send', {gpio: gpioIn, 'cmd': 'state', value: 'ON'});
