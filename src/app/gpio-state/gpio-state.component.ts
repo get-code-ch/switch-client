@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
 import * as io from 'socket.io-client';
-
 import {SwitchConfigService} from '../config/switch-config.service';
 import {SwitchConfig} from '../config/switch-config';
 
@@ -12,37 +12,56 @@ import {SwitchConfig} from '../config/switch-config';
 
 export class GpioStateComponent implements OnInit {
   socket: any;
+  subscription: Subscription;
+  configuration: SwitchConfig;
 
-  gpioIn = 16;
-  servername: string = 'N/A';
-  state: number;
-  gpio: number;
+  private _server: string = 'N/A';
 
   constructor(private configService: SwitchConfigService) {
+    this.configuration = new SwitchConfig;
+    this.configuration.server = null;
+    this.socket = null;
   }
 
   ngOnInit() {
-    this.configService.getConfig().subscribe(switchConfig => this.connect(switchConfig));
+    this.subscription = this.configService.configuration$.subscribe(switchConfig => {
+      this.configChangeEvent(switchConfig);
+    });
   }
 
-  connect(switchConfig: SwitchConfig) {
-    this.socket = io(switchConfig.service + '://' + switchConfig.server + ':' + switchConfig.port);
+  configChangeEvent(switchConfig: SwitchConfig) {
+    this.configuration = switchConfig;
+    if (this._server !== this.configuration.server) {
+      this._server = switchConfig.server;
+      if (this.socket !== null) {
+        this.socket.disconnect();
+        this.connect();
+      } else {
+        this.connect();
+      }
+      this.configuration.gpios.filter(element => {
+        this.socket.emit('get', {'gpio': element.id, 'cmd': 'state'});
+      });
+    }
+  }
 
+  connect() {
+    this.socket = io(this.configuration.service + '://' + this.configuration.server + ':' + this.configuration.port);
+    // Receive new status
     this.socket.on('gpiostatus', function (data: any) {
       console.log('gpiostatus : ' + JSON.stringify(data));
-      this.servername = data.servername;
-      this.gpio = data.gpio;
-      this.state = data.state;
+      let i = this.configuration.gpios.findIndex(element => element.id === data.gpio);
+      this.configuration.gpios[i].state = data.state;
     }.bind(this));
 
-    this.socket.emit('get', {'gpio': this.gpioIn, 'cmd': 'state'});
+
   }
 
   changeState(gpioIn, state: boolean) {
     if (state) {
-      this.socket.emit('send', {gpio: gpioIn, 'cmd': 'state', value: 'ON'});
+      this.socket.emit('set', {gpio: gpioIn, 'cmd': 'state', value: 'ON'});
     } else {
-      this.socket.emit('send', {gpio: gpioIn, 'cmd': 'state', value: 'OFF'});
+      this.socket.emit('set', {gpio: gpioIn, 'cmd': 'state', value: 'OFF'});
     }
   }
 }

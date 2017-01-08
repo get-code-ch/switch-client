@@ -1,9 +1,5 @@
 <div class="gpio-state">
-  <h1>Server: {{gpiostate.servername}}</h1>
-  <swc-gpio-state #gpiostate></swc-gpio-state>
-    <ul>
-      <li *ngFor="let gpio of configuration?.gpios">
-        <p>{{gpio.id}} - {{gpio.description}}</p>
-      </li>
-    </ul>
+  <h1>Server: {{configuration?.server}}</h1>
+  <h2><img src="../assets/images/button-grey.svg"  (click)="addGpio()">{{configuration?.service}}</h2>
+  <swc-gpio-state></swc-gpio-state>
 </div>

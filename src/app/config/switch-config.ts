@@ -1,6 +1,7 @@
 export class Gpio {
   id: number;
   description: string;
+  state: boolean;
 }
 export class SwitchConfig {
   server: string;
