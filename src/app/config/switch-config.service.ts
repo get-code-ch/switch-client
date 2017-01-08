@@ -17,7 +17,8 @@ export class SwitchConfigService implements  OnInit {
   }
 
   getConfig() {
-    return this.http.get('assets/switch.conf').map(response => {return <SwitchConfig>response.json().data; });
+    // return this.http.get('assets/switch.conf').map(response => {return <SwitchConfig>response.json().data; });
+    return this.http.get('http://pommepi3.pommepn:8080/switch.conf').map(response => {return <SwitchConfig>response.json().data; });
   }
 
   updateConfig(conf: SwitchConfig) {

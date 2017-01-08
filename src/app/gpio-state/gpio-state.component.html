@@ -1,12 +1,12 @@
   <table border="0px">
     <tr *ngFor="let gpio of configuration?.gpios">
       <td>
-        <span *ngIf="!gpio.state"><img src="../../assets/images/button-red.svg"></span>
-        <span *ngIf="gpio.state"><img src="../../assets/images/button-green.svg"></span>
+        <i *ngIf="!gpio.state" class="material-icons redicon">swap_vert</i>
+        <i *ngIf="gpio.state" class="material-icons greenicon">swap_vertical_circle</i>
       </td>
       <td>{{gpio.id}} - {{gpio.description}}</td>
-      <img src="../../assets/images/button-green.svg" (click)="changeState(gpio.id,true)">
-      <img src="../../assets/images/button-red.svg"  (click)="changeState(gpio.id,false)">
+      <i class="material-icons greenicon" (click)="changeState(gpio.id,true)">power_settings_new</i>
+      <i class="material-icons redicon" (click)="changeState(gpio.id,false)">power_settings_new</i>
     </tr>
   </table>
 

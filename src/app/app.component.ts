@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
       description: 'Hello',
       state: false
     });
-    this.configuration.server = 'pommepi3.pommepn';
     this.configService.updateConfig(this.configuration);
   }
 }

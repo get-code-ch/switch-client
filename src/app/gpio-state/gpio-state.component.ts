@@ -15,8 +15,6 @@ export class GpioStateComponent implements OnInit {
   subscription: Subscription;
   configuration: SwitchConfig;
 
-  private _server: string = 'N/A';
-
   constructor(private configService: SwitchConfigService) {
     this.configuration = new SwitchConfig;
     this.configuration.server = null;
@@ -31,18 +29,10 @@ export class GpioStateComponent implements OnInit {
 
   configChangeEvent(switchConfig: SwitchConfig) {
     this.configuration = switchConfig;
-    if (this._server !== this.configuration.server) {
-      this._server = switchConfig.server;
-      if (this.socket !== null) {
-        this.socket.disconnect();
-        this.connect();
-      } else {
-        this.connect();
-      }
-      this.configuration.gpios.filter(element => {
-        this.socket.emit('get', {'gpio': element.id, 'cmd': 'state'});
-      });
+    if (this.socket !== null) {
+      this.socket.disconnect();
     }
+    this.connect();
   }
 
   connect() {
@@ -54,7 +44,10 @@ export class GpioStateComponent implements OnInit {
       this.configuration.gpios[i].state = data.state;
     }.bind(this));
 
-
+    this.configuration.gpios.filter(element => {
+      console.log('connect: ' + JSON.stringify(element));
+      this.socket.emit('get', {'gpio': element.id, 'cmd': 'state', 'state': element.state, 'description': element.description});
+    });
   }
 
   changeState(gpioIn, state: boolean) {
