@@ -40,21 +40,21 @@ export class GpioStateComponent implements OnInit {
     // Receive new status
     this.socket.on('gpiostatus', function (data: any) {
       console.log('gpiostatus : ' + JSON.stringify(data));
-      let i = this.configuration.gpios.findIndex(element => element.id === data.gpio);
+      let i = this.configuration.gpios.findIndex(element => element.id === data.id);
       this.configuration.gpios[i].state = data.state;
     }.bind(this));
 
     this.configuration.gpios.filter(element => {
       console.log('connect: ' + JSON.stringify(element));
-      this.socket.emit('get', {'gpio': element.id, 'cmd': 'state', 'state': element.state, 'description': element.description});
+      this.socket.emit('get', {'id': element.id, 'cmd': 'state', 'state': element.state, 'description': element.description});
     });
   }
 
   changeState(gpioIn, state: boolean) {
     if (state) {
-      this.socket.emit('set', {gpio: gpioIn, 'cmd': 'state', value: 'ON'});
+      this.socket.emit('set', {'id': gpioIn, 'cmd': 'state', value: 'ON'});
     } else {
-      this.socket.emit('set', {gpio: gpioIn, 'cmd': 'state', value: 'OFF'});
+      this.socket.emit('set', {'id': gpioIn, 'cmd': 'state', value: 'OFF'});
     }
   }
 }
