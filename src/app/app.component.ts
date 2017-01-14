@@ -26,11 +26,13 @@ export class AppComponent implements OnInit {
   }
 
   addGpio() {
-    this.configuration.gpios.push({
-      id: 18,
-      description: 'Hello',
-      state: false
-    });
+    if (this.configuration.gpios.findIndex(element => element.id === 18) === -1) {
+      this.configuration.gpios.push({
+        id: 18,
+        description: 'Hello',
+        state: false
+      });
     this.configService.updateConfig(this.configuration);
+    }
   }
 }

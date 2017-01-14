@@ -44,6 +44,11 @@ export class GpioStateComponent implements OnInit {
       this.configuration.gpios[i].state = data.state;
     }.bind(this));
 
+    this.socket.on('configuration', function (data: any) {
+      console.log('configuration : ' + JSON.stringify(data));
+      this.configuration = data.data;
+    }.bind(this));
+
     this.configuration.gpios.filter(element => {
       console.log('connect: ' + JSON.stringify(element));
       this.socket.emit('get', {'id': element.id, 'cmd': 'state', 'state': element.state, 'description': element.description});
