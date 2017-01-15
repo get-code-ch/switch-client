@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
   configSubscription: Subscription;
   dataSubscription: Subscription;
   configuration: SwitchConfig;
+  selectedPin: number;
   rcvData: String;
-
 
   constructor(private configService: SwitchConfigService, private commService: CommunicationService) {
   }
@@ -39,12 +39,12 @@ export class AppComponent implements OnInit {
 
   addGpio() {
     let pin = {
-      id: 18,
+      id: this.selectedPin,
       description: 'Hello',
       state: false
     };
 
-    if (this.configuration.gpios.findIndex(element => element.id === 18) === -1) {
+    if (this.configuration.gpios.findIndex(element => element.id === pin.id) === -1) {
       this.configuration.gpios.push(pin);
       this.commService.addPin(pin);
       // this.configService.updateConfig(this.configuration);

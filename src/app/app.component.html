@@ -1,6 +1,12 @@
 <div class="gpio-state">
   <h1> Server: {{configuration?.server}}</h1>
   <swc-gpio-state></swc-gpio-state>
+
+  <select [(ngModel)]="selectedPin">
+    <option *ngFor="let pin of configuration?.physicals">{{pin}}</option>
+  </select>
   <i class="material-icons primary" (click)="addGpio()">add_circle</i>
-  <p> {{rcvData}}</p>
+
+  <p>{{rcvData}}</p>
+  <p>{{selectedPin}}</p>
 </div>

@@ -8,4 +8,5 @@ export class SwitchConfig {
   port: number;
   service: string;
   gpios: Gpio[];
+  physicals: number[];
 }
