@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
 
 import {SwitchConfigService} from './config/switch-config.service';
 import {SwitchConfig} from './config/switch-config';
+
+import {CommunicationService} from './communication/communication.service';
+
 
 @Component({
   selector: 'swc-app-root',
@@ -10,29 +14,40 @@ import {SwitchConfig} from './config/switch-config';
 })
 
 export class AppComponent implements OnInit {
+  configSubscription: Subscription;
+  dataSubscription: Subscription;
   configuration: SwitchConfig;
+  rcvData: String;
 
-  constructor(private configService: SwitchConfigService) {
+
+  constructor(private configService: SwitchConfigService, private commService: CommunicationService) {
   }
 
   ngOnInit() {
-    this.configService.getConfig().subscribe(switchConfig => this.loadConfig(switchConfig));
+    this.dataSubscription = this.commService.data$.subscribe(data => {
+      this.rcvData = JSON.stringify(data);
+      console.log('gpio-state data changed: ' + this.rcvData);
+    });
+    this.configSubscription = this.configService.configuration$.subscribe(switchConfig => {
+      this.loadConfig(switchConfig);
+    });
   }
 
   loadConfig(switchConfig: SwitchConfig) {
     this.configuration = switchConfig;
-    console.log(JSON.stringify(this.configuration));
-    this.configService.updateConfig(this.configuration);
   }
 
   addGpio() {
+    let pin = {
+      id: 18,
+      description: 'Hello',
+      state: false
+    };
+
     if (this.configuration.gpios.findIndex(element => element.id === 18) === -1) {
-      this.configuration.gpios.push({
-        id: 18,
-        description: 'Hello',
-        state: false
-      });
-    this.configService.updateConfig(this.configuration);
+      this.configuration.gpios.push(pin);
+      this.commService.addPin(pin);
+      // this.configService.updateConfig(this.configuration);
     }
   }
 }

@@ -7,6 +7,7 @@ import {GpioStateComponent} from './gpio-state/gpio-state.component';
 import {AppComponent} from './app.component';
 
 import {SwitchConfigService} from './config/switch-config.service';
+import {CommunicationService} from './communication/communication.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,10 @@ import {SwitchConfigService} from './config/switch-config.service';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [SwitchConfigService],
+  providers: [
+    SwitchConfigService,
+    CommunicationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
