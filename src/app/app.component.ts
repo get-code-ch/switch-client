@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
 
   addGpio() {
     let pin = {
-      id: this.selectedPin,
+      id: Number(this.selectedPin),
       description: 'Hello',
       state: false
     };
