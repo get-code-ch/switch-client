@@ -5,7 +5,6 @@ import {Subject} from 'rxjs/Subject';
 import {SwitchConfig} from './switch-config';
 import {environment} from '../../environments/environment';
 
-
 @Injectable()
 export class SwitchConfigService {
   private configurationSrc = new Subject<SwitchConfig>();
@@ -21,9 +20,14 @@ export class SwitchConfigService {
         return <SwitchConfig>response.json().data;
       });
     } else {
+      return this.http.get('http://localhost/switch.conf').map(response => {
+        return <SwitchConfig>response.json().data;
+      });
+      /*
       return this.http.get('switch.conf').map(response => {
         return <SwitchConfig>response.json().data;
       });
+       */
     }
   }
 

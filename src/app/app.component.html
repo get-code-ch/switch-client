@@ -5,8 +5,9 @@
   <select [(ngModel)]="selectedPin">
     <option *ngFor="let pin of configuration?.physicals">{{pin}}</option>
   </select>
+  <input [(ngModel)]="pinDescription">
   <i class="material-icons primary" (click)="addGpio()">add_circle</i>
 
-  <p>{{rcvData}}</p>
-  <p>{{selectedPin}}</p>
+  <!-- <p>{{rcvData}}</p> -->
+  <p>{{selectedPin}} - {{pinDescription}}</p>
 </div>

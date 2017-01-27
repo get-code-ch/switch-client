@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   dataSubscription: Subscription;
   configuration: SwitchConfig;
   selectedPin: number;
+  pinDescription: string;
   rcvData: String;
 
   constructor(private configService: SwitchConfigService, private commService: CommunicationService) {
@@ -40,7 +41,7 @@ export class AppComponent implements OnInit {
   addGpio() {
     let pin = {
       id: Number(this.selectedPin),
-      description: 'Hello',
+      description: this.pinDescription,
       state: false
     };
 

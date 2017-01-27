@@ -35,4 +35,8 @@ export class GpioStateComponent implements OnInit {
     this.commService.changeState(pin, state);
   }
 
+  removePin(pin) {
+    this.commService.removePin(pin);
+  }
+
 }

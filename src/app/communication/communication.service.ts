@@ -17,7 +17,6 @@ export class CommunicationService {
 
   configuration: SwitchConfig;
 
-
   constructor(private configService: SwitchConfigService) {
     this.configuration = new SwitchConfig;
     this.configuration.server = null;
@@ -73,6 +72,10 @@ export class CommunicationService {
 
   addPin(pin: Gpio) {
     this.socket.emit('get', {'id': pin.id, 'cmd': 'state', 'state': pin.state, 'description': pin.description});
+  }
+
+  removePin(id: number) {
+    this.socket.emit('set', {'id': id, 'cmd': 'remove'});
   }
 
 }
